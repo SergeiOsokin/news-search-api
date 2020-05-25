@@ -6,7 +6,8 @@ const bodyParser = require('body-parser');
 const routerUsers = require('./routes/user');
 const routerArticles = require('./routes/article');
 const { auth } = require('./middlewares/auth');
-const { createUser, login } = require('./controllers/user')
+const { createUser, login } = require('./controllers/user');
+const { requestLogger, errorLogger } = require('./middlewares/loggers');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -20,12 +21,14 @@ mongoose.connect('mongodb://localhost:27017/newsdb', {
 
 app.use(bodyParser.json());
 
+app.use(requestLogger);
 app.post('/signup', createUser);
 app.post('/signin', login);
 
 app.use('/users', auth, routerUsers);
 app.use('/articles', auth, routerArticles);
 
+app.use(errorLogger);
 app.use('*', (req, res) => res.status(404).send({ message: 'Запрашиваемый ресурс не найден' }));
 
 app.use((err, req, res, next) => {
