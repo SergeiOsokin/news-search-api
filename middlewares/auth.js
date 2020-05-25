@@ -12,7 +12,6 @@ const auth = (req, res, next) => {
 
   try {
     payload = jwt.verify(token, JWT_SECRET);
-    // payload = jwt.verify(token, NODE_ENV === 'production' ? JWT_SECRET : 'secretik');
   } catch (err) {
     return res.status(401).send({ message: 'Проблема с токеном' });
   }
