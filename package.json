@@ -16,5 +16,15 @@
   "bugs": {
     "url": "https://github.com/SergeiOsokin/news-search-api/issues"
   },
-  "homepage": "https://github.com/SergeiOsokin/news-search-api#readme"
+  "homepage": "https://github.com/SergeiOsokin/news-search-api#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "express": "^4.17.1",
+    "mongoose": "^5.9.15",
+    "validator": "^13.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.1.0",
+    "nodemon": "^2.0.4"
+  }
 }
