@@ -48,6 +48,13 @@ const card = mongoose.Schema({
 },
 { versionKey: false });
 
+// скроем собственника карточки
+user.methods.toJSON = function () {
+  const obj = this.toObject();
+  delete obj.owner;
+  return obj;
+};
+
 module.exports = mongoose.model('card', card);
 
 card.path('link').validate((value) => /(https?:\/\/)(www\.)?((\w+\.\w{2,})|(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}))(:\d{2,5})?.*#?/i.test(value), 'Invalid URL');

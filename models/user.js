@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const validator = require('validator');
-const { NotFoundUser, BrokenPassword } = require('../errors/errors');
+// const { NotFoundUser, BrokenPassword } = require('../errors/errors');
 
 const user = new mongoose.Schema({
   email: {
@@ -52,6 +52,5 @@ user.methods.toJSON = function () {
   delete obj.password;
   return obj;
 };
-
 
 module.exports = mongoose.model('user', user);
