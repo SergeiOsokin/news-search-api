@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-const { NODE_ENV, JWT_SECRET } = process.env;
+const { JWT_SECRET } = require('../config');
 
 const auth = (req, res, next) => {
   const { cookie } = req.headers;
@@ -11,7 +11,8 @@ const auth = (req, res, next) => {
   let payload;// так сделали из-за области видимости
 
   try {
-    payload = jwt.verify(token, NODE_ENV === 'production' ? JWT_SECRET : 'secretik');
+    payload = jwt.verify(token, JWT_SECRET);
+    // payload = jwt.verify(token, NODE_ENV === 'production' ? JWT_SECRET : 'secretik');
   } catch (err) {
     return res.status(401).send({ message: 'Проблема с токеном' });
   }

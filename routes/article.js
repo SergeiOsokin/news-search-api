@@ -1,8 +1,10 @@
 const routerArticles = require('express').Router();
 const { getArticles, createArticle, deleteArticle } = require('../controllers/article');
-const { validationGetArticle,
+const {
+  validationGetArticle,
   validationCreateArticle,
-  validationDeleteArticle, } = require('../middlewares/validationArticle');
+  validationDeleteArticle,
+} = require('../middlewares/validationArticle');
 
 routerArticles.get('/', validationGetArticle, getArticles);
 

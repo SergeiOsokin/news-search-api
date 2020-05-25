@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const card = mongoose.Schema({
+const article = mongoose.Schema({
   keyword: {
     type: String,
     required: true,
@@ -49,13 +49,14 @@ const card = mongoose.Schema({
 { versionKey: false });
 
 // скроем собственника карточки
-user.methods.toJSON = function () {
+// eslint-disable-next-line func-names
+article.methods.toJSON = function () {
   const obj = this.toObject();
   delete obj.owner;
   return obj;
 };
 
-module.exports = mongoose.model('card', card);
+module.exports = mongoose.model('article', article);
 
-card.path('link').validate((value) => /(https?:\/\/)(www\.)?((\w+\.\w{2,})|(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}))(:\d{2,5})?.*#?/i.test(value), 'Invalid URL');
-card.path('image').validate((value) => /(https?:\/\/)(www\.)?((\w+\.\w{2,})|(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}))(:\d{2,5})?.*#?/i.test(value), 'Invalid URL');
+article.path('link').validate((value) => /(https?:\/\/)(www\.)?((\w+\.\w{2,})|(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}))(:\d{2,5})?.*#?/i.test(value), 'Invalid URL');
+article.path('image').validate((value) => /(https?:\/\/)(www\.)?((\w+\.\w{2,})|(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}))(:\d{2,5})?.*#?/i.test(value), 'Invalid URL');

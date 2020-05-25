@@ -4,24 +4,21 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
 const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
+const { limiter } = require('./rateLimit-config');
 
 const routerUsers = require('./routes/user');
 const routerArticles = require('./routes/article');
 const { auth } = require('./middlewares/auth');
 const { createUser, login } = require('./controllers/user');
 const { requestLogger, errorLogger } = require('./middlewares/loggers');
-const {  validationCreateUser,  validationLogin } = require('./middlewares/validationUser');
+const { validationCreateUser, validationLogin } = require('./middlewares/validationUser');
+const { errorMiddleware } = require('./middlewares/errorMiddlewares');
 
-const { PORT = 3000 } = process.env;
+const { PORT, DATABASE_URL } = require('./config');
+
 const app = express();
 
-const limiter = rateLimit({
-  windowMs: 20 * 60 * 1000, // за 15 минут
-  max: 100, // можно совершить максимум 100 запросов с одного IP
-});
-
-mongoose.connect('mongodb://localhost:27017/newsdb', {
+mongoose.connect(DATABASE_URL, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
@@ -42,13 +39,9 @@ app.use('/articles', auth, routerArticles);
 app.use(errorLogger);
 app.use('*', (req, res) => res.status(404).send({ message: 'Запрашиваемый ресурс не найден' }));
 app.use(errors());
-app.use((err, req, res, next) => {
-  if (err.statusCode || err.name === 'ValidationError') {
-    return res.status(err.statusCode || 400).send({ message: `Ошибка: ${err.message}` });
-  }
-  return res.status(500).send({ message: `Ошибка на сервере: ${err.message}` });
-});
+app.use(errorMiddleware);
 
 app.listen(PORT, () => {
-  console.log('Begin listening', NODE_ENV);
+  // eslint-disable-next-line no-console
+  console.log('Begin listening^');
 });

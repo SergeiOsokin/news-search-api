@@ -21,7 +21,7 @@ const login = (req, res, next) => {
 };
 
 const getUser = (req, res, next) => {
-  User.findById(req.params.userId)
+  User.findById(req.params.me)
     .orFail(new NotFoundUser('Нет такого юзера'))
     .then((user) => res.send({ data: user }))
     .catch(next);
@@ -29,12 +29,12 @@ const getUser = (req, res, next) => {
 
 const createUser = (req, res, next) => {
   const {
-    email, password, name
+    email, password, name,
   } = req.body;
   return bcrypt.hash(password, 10)
     .then((hash) => {
       User.create({
-        email, password: hash, name
+        email, password: hash, name,
       })
         .then((user) => res.send({ data: user }))
         .catch(next);
