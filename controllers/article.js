@@ -1,9 +1,9 @@
 /* eslint-disable no-shadow */
-const card = require('../models/card');
+const Article = require('../models/article');
 const { PermissionError, ArticleNotExist } = require('../errors/errors');
 
 const getArticles = (req, res, next) => {
-  card.find({})
+  Article.find({})
     .populate('owner')
     .orFail(new ArticleNotExist('Получить все статьи не удалось'))
     .then((articles) => res.send({ data: articles }))
@@ -12,17 +12,17 @@ const getArticles = (req, res, next) => {
 
 const createArticle = (req, res, next) => {
   const { keyword, title, text, date, source, link, image } = req.body;
-  card.create({ keyword, title, text, date, source, link, image, owner: req.user._id })
+  Article.create({ keyword, title, text, date, source, link, image, owner: req.user._id })
     .then((article) => res.send({ data: article }))
     .catch(next);
 };
 
 const deleteArticle = (req, res, next) => {
-  card.findByIdAndDelete(req.params.articleId)
+  Article.findByIdAndDelete(req.params.articleId)
     .orFail(new ArticleNotExist('Статья не нашлась'))
-    .then((card) => {
+    .then((article) => {
       // eslint-disable-next-line eqeqeq
-      if (req.user._id == card.owner) {
+      if (req.user._id == article.owner) {
         return res.send({ message: 'Статья удалена', data: article });
       }
       throw new PermissionError('Не ваша статья');
