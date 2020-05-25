@@ -1,0 +1,20 @@
+{
+  "name": "news-search-api",
+  "version": "1.0.0",
+  "description": "Backend for diploma project",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SergeiOsokin/news-search-api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SergeiOsokin/news-search-api/issues"
+  },
+  "homepage": "https://github.com/SergeiOsokin/news-search-api#readme"
+}
