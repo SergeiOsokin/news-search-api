@@ -13,7 +13,7 @@ const { createUser, login } = require('./controllers/user');
 const { requestLogger, errorLogger } = require('./middlewares/loggers');
 const { validationCreateUser, validationLogin } = require('./middlewares/validationUser');
 const { errorMiddleware } = require('./middlewares/errorMiddlewares');
-
+const { NotFound } = require('./errors/errors');
 const { PORT, DATABASE_URL } = require('./config');
 
 const app = express();
@@ -37,7 +37,7 @@ app.use('/users', auth, routerUsers);
 app.use('/articles', auth, routerArticles);
 
 app.use(errorLogger);
-app.use('*', (req, res) => res.status(404).send({ message: 'Запрашиваемый ресурс не найден' }));
+app.use('*', (req, res, next) => next(new NotFound('Запрашиваемый ресурс не найден')));
 app.use(errors());
 app.use(errorMiddleware);
 

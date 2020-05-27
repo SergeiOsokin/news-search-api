@@ -49,7 +49,6 @@ const article = mongoose.Schema({
 { versionKey: false });
 
 // скроем собственника карточки
-// eslint-disable-next-line func-names
 article.methods.toJSON = function () {
   const obj = this.toObject();
   delete obj.owner;

@@ -1,8 +1,7 @@
-/* eslint-disable no-shadow */
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
-const { NotFoundUser } = require('../errors/errors');
+const { NotFound } = require('../errors/errors');
 
 const { JWT_SECRET } = require('../config');
 
@@ -21,8 +20,8 @@ const login = (req, res, next) => {
 };
 
 const getUser = (req, res, next) => {
-  User.findById(req.params.me)
-    .orFail(new NotFoundUser('Нет такого юзера'))
+  User.findById(req.user._id)
+    .orFail(new NotFound('Нет такого юзера'))
     .then((user) => res.send({ data: user }))
     .catch(next);
 };

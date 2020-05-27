@@ -1,11 +1,10 @@
-/* eslint-disable max-classes-per-file */
-class NotFoundUser extends Error {
+class NotFound extends Error {
   constructor(message) {
     super(message);
     this.statusCode = 404;
   }
 }
-class BrokenPassword extends Error {
+class BadAuthData extends Error {
   constructor(message) {
     super(message);
     this.statusCode = 401;
@@ -15,14 +14,14 @@ class BrokenPassword extends Error {
 class NotYourProfile extends Error {
   constructor(message) {
     super(message);
-    this.statusCode = 400;
+    this.statusCode = 403;
   }
 }
 
 class PermissionError extends Error {
   constructor(message) {
     super(message);
-    this.statusCode = 400;
+    this.statusCode = 403;
   }
 }
 
@@ -40,6 +39,27 @@ class ArticleNotExist extends Error {
   }
 }
 
+class NotHeaders extends Error {
+  constructor(message) {
+    super(message);
+    this.statusCode = 401;
+  }
+}
+
+class NotUniqueUser extends Error {
+  constructor(message) {
+    super(message);
+    this.statusCode = 409;
+  }
+}
+
 module.exports = {
-  NotFoundUser, BrokenPassword, NotYourProfile, BadToken, PermissionError, ArticleNotExist,
+  NotFound,
+  BadAuthData,
+  NotYourProfile,
+  BadToken,
+  PermissionError,
+  ArticleNotExist,
+  NotHeaders,
+  NotUniqueUser,
 };

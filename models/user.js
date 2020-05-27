@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const validator = require('validator');
-const { NotFoundUser, BrokenPassword } = require('../errors/errors');
+const { BadAuthData } = require('../errors/errors');
 
 const user = new mongoose.Schema({
   email: {
@@ -31,25 +31,22 @@ const user = new mongoose.Schema({
 },
 { versionKey: false });
 
-// eslint-disable-next-line func-names
 user.statics.findUserByCredentials = function (email, password) {
   return this.findOne({ email }).select('+password') // добавляем, чтобы был хэш, если аторизация норм.
-    // eslint-disable-next-line no-shadow
-    .then((user) => {
-      if (!user) {
-        throw new NotFoundUser('Не удалось найти пользователя с таким email');
+    .then((usercard) => {
+      if (!usercard) {
+        throw new BadAuthData('Не удалось найти пользователя с таким email');
       }
-      return bcrypt.compare(password, user.password)
+      return bcrypt.compare(password, usercard.password)
         .then((matched) => {
           if (!matched) {
-            throw new BrokenPassword('Не правильный логин или пароль');
+            throw new BadAuthData('Не правильный логин или пароль');
           }
-          return user;
+          return usercard;
         });
     });
 };
 // скроем пароль при возвращении созданного пользователя
-// eslint-disable-next-line func-names
 user.methods.toJSON = function () {
   const obj = this.toObject();
   delete obj.password;

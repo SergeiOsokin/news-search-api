@@ -4,7 +4,7 @@
   "description": "Backend for diploma project",
   "main": "index.js",
   "scripts": {
-    "start": "SET NODE_ENV=production & node app.js",
+    "start": "node app.js",
     "dev": "nodemon app.js"
   },
   "repository": {

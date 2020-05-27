@@ -1,4 +1,3 @@
-/* eslint-disable no-shadow */
 const Article = require('../models/article');
 const { PermissionError, ArticleNotExist } = require('../errors/errors');
 
@@ -27,10 +26,10 @@ const deleteArticle = (req, res, next) => {
   Article.findById(req.params.articleId)
     .orFail(new ArticleNotExist('Статья не нашлась'))
     .then((article) => {
-      //      eslint-disable-next-line eqeqeq
+      // eslint-disable-next-line eqeqeq
       if (req.user._id == article.owner) {
         return Article.findByIdAndDelete(req.params.articleId)
-          .then((article) => res.send({ message: 'Статья удалена', data: article }));
+          .then((deletedData) => res.send({ message: 'Статья удалена', data: deletedData }));
       }
       throw new PermissionError('Не ваша статья');
     })

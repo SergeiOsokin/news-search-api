@@ -3,6 +3,9 @@ const { celebrate, Joi } = require('celebrate');
 const urlValidation = Joi.string().required()
   .regex(/(https?:\/\/)(www\.)?((\w+\.\w{2,})|(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}))(:\d{2,5})?.*#?/i);
 
+const objectIdValidation = Joi.string().required().max(30)
+  .regex(/^[0-9a-fA-F]{24}$/i);
+
 const validationGetArticle = celebrate({
   headers: Joi.object().keys({
     cookie: Joi.string().required(),
@@ -27,7 +30,7 @@ const validationCreateArticle = celebrate({
 
 const validationDeleteArticle = celebrate({
   params: Joi.object().keys({
-    articleId: Joi.string().max(30),
+    articleId: objectIdValidation,
   }).unknown(true),
   headers: Joi.object().keys({
     cookie: Joi.string().required(),
