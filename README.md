@@ -1,7 +1,7 @@
 # news-search-api
 Backend for diploma project
 
-Version 1.0.6
+Version 1.0.9
 
 К серверу можно обратиться по следующим адресам:
 Публичный IP 84.201.147.125

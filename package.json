@@ -1,6 +1,6 @@
 {
   "name": "news-search-api",
-  "version": "1.0.0",
+  "version": "1.0.9",
   "description": "Backend for diploma project",
   "main": "index.js",
   "scripts": {

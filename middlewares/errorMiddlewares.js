@@ -1,9 +1,11 @@
 const { NotUniqueUser } = require('../errors/errors');
 
+const { alreadyExist, errorInArticleId } = require('../const');
+
 const errorMiddleware = (err, req, res, next) => {
-  const notUnique = new NotUniqueUser('Пользователь с таким email существует');
+  const notUnique = new NotUniqueUser(alreadyExist);
   const errObjectId = err.message
-    .startsWith('Cast to ObjectId failed') ? 'Ошибка в присланном идентификаторе статьи' : null;
+    .startsWith('Cast to ObjectId failed') ? errorInArticleId : null;
   if (err.statusCode || err.name === 'ValidationError') {
     return res.status(err.statusCode || 400).send({ message: `Ошибка: ${err.message}` });
   }

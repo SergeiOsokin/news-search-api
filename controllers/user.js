@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
 const { NotFound } = require('../errors/errors');
+const { dataNotFound } = require('../const');
 
 const { JWT_SECRET } = require('../config');
 
@@ -21,7 +22,7 @@ const login = (req, res, next) => {
 
 const getUser = (req, res, next) => {
   User.findById(req.user._id)
-    .orFail(new NotFound('Нет такого юзера'))
+    .orFail(new NotFound(dataNotFound))
     .then((user) => res.send({ data: user }))
     .catch(next);
 };

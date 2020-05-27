@@ -6,14 +6,14 @@ const { errors } = require('celebrate');
 const helmet = require('helmet');
 const { limiter } = require('./rateLimit-config');
 
-const routerUsers = require('./routes/user');
-const routerArticles = require('./routes/article');
-const { auth } = require('./middlewares/auth');
+const { routerUsers, routerArticles } = require('./routes/index');
 const { createUser, login } = require('./controllers/user');
+const { auth } = require('./middlewares/auth');
 const { requestLogger, errorLogger } = require('./middlewares/loggers');
 const { validationCreateUser, validationLogin } = require('./middlewares/validationUser');
 const { errorMiddleware } = require('./middlewares/errorMiddlewares');
 const { NotFound } = require('./errors/errors');
+const { resourceNotFound } = require('./const');
 const { PORT, DATABASE_URL } = require('./config');
 
 const app = express();
@@ -37,7 +37,7 @@ app.use('/users', auth, routerUsers);
 app.use('/articles', auth, routerArticles);
 
 app.use(errorLogger);
-app.use('*', (req, res, next) => next(new NotFound('Запрашиваемый ресурс не найден')));
+app.use('*', (req, res, next) => next(new NotFound(resourceNotFound)));
 app.use(errors());
 app.use(errorMiddleware);
 

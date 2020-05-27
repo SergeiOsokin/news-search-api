@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const validator = require('validator');
 const { BadAuthData } = require('../errors/errors');
+const { notFoundUserEmail, wrongPasswordOrLogin } = require('../const');
 
 const user = new mongoose.Schema({
   email: {
@@ -35,12 +36,12 @@ user.statics.findUserByCredentials = function (email, password) {
   return this.findOne({ email }).select('+password') // добавляем, чтобы был хэш, если аторизация норм.
     .then((usercard) => {
       if (!usercard) {
-        throw new BadAuthData('Не удалось найти пользователя с таким email');
+        throw new BadAuthData(notFoundUserEmail);
       }
       return bcrypt.compare(password, usercard.password)
         .then((matched) => {
           if (!matched) {
-            throw new BadAuthData('Не правильный логин или пароль');
+            throw new BadAuthData(wrongPasswordOrLogin);
           }
           return usercard;
         });
