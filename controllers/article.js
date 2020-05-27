@@ -29,7 +29,7 @@ const deleteArticle = (req, res, next) => {
     .then((article) => {
       // eslint-disable-next-line eqeqeq
       if (req.user._id == article.owner) {
-        return Article.remove(article)
+        return Article.deleteOne(article)
           .then((deletedData) => res.send({ message: 'Статья удалена', data: deletedData }));
       }
       throw new PermissionError(permissionText);
