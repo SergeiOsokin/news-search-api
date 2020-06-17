@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
 const helmet = require('helmet');
+const cors = require('cors');
+const cookieParser = require('cookie-parser');
 const { limiter } = require('./rateLimit-config');
 
 const { routerUsers, routerArticles } = require('./routes/index');
@@ -17,7 +19,7 @@ const { resourceNotFound } = require('./const');
 const { PORT, DATABASE_URL } = require('./config');
 
 const app = express();
-
+app.use(cookieParser());
 mongoose.connect(DATABASE_URL, {
   useNewUrlParser: true,
   useCreateIndex: true,
@@ -25,13 +27,23 @@ mongoose.connect(DATABASE_URL, {
   useUnifiedTopology: true,
 });
 
+const corsOptions = {
+  origin: 'http://localhost:8080',
+  credentials: true,
+};
+app.use(cookieParser());
 app.use(limiter);
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(helmet());
 
+app.use(cors(corsOptions));
+app.use(cookieParser());
 app.use(requestLogger);
 app.post('/signup', validationCreateUser, createUser);
 app.post('/signin', validationLogin, login);
+
+app.use(cookieParser());
 
 app.use('/users', auth, routerUsers);
 app.use('/articles', auth, routerArticles);
