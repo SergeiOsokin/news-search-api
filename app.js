@@ -34,7 +34,6 @@ const corsOptions = {
 app.use(cookieParser());
 app.use(limiter);
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 app.use(helmet());
 
 app.use(cors(corsOptions));
