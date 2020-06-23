@@ -12,7 +12,7 @@ const errorMiddleware = (err, req, res, next) => {
   if (err.message.startsWith('E11000 duplicate key error')) {
     return res.status(notUnique.statusCode).send({ message: `${notUnique.message}` });
   }
-  res.status(500).send({ message: `Ошибка: ${errObjectId || err.message}` });
+  res.status(500).send({ message: `${errObjectId || err.message}` });
   return next();
 };
 module.exports = { errorMiddleware };
