@@ -4,11 +4,11 @@ const { JWT_SECRET } = require('../config');
 const { needHeader, badToken } = require('../const');
 
 const auth = (req, res, next) => {
-  const { cookie } = req.headers;
-  if (!cookie || !cookie.startsWith('jwt=')) { // проверяем что заголовок есть
+  const cookie = req.cookies.jwt;
+  if (!cookie) { // проверяем что заголовок есть
     throw new NotHeaders(needHeader);
   }
-  const token = cookie.replace('jwt=', ''); // тут извлекаем токен
+  const token = cookie; // тут извлекаем токен
   let payload;// так сделали из-за области видимости
 
   try {

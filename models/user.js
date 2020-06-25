@@ -31,6 +31,7 @@ const user = new mongoose.Schema({
   },
 },
 { versionKey: false });
+user.index({ email: 1 }, { unique: true });
 
 user.statics.findUserByCredentials = function (email, password) {
   return this.findOne({ email }).select('+password') // добавляем, чтобы был хэш, если аторизация норм.

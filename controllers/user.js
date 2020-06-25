@@ -13,8 +13,8 @@ const login = (req, res, next) => {
       const token = jwt.sign({ _id: user._id },
         JWT_SECRET,
         { expiresIn: '7d' });
-      res
-        .cookie('jwt', token, { httpOnly: true, sameSite: true })
+      res.cookie('jwt', token, { domain: '', httpOnly: true })
+        .send({ data: user.name })
         .end();
     })
     .catch(next);
