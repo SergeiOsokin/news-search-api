@@ -19,6 +19,14 @@ const { NotFound } = require('./errors/errors');
 const { resourceNotFound } = require('./const');
 const { PORT, DATABASE_URL } = require('./config');
 
+const whitelist = [
+  'http://localhost:8080',
+  'http://127.0.0.1:5500',
+  'https://sergeiosokin.github.io',
+  'https://www.news-search.tk',
+  'http://www.news-search.tk'];
+
+
 const app = express();
 app.use(cookieParser());
 mongoose.connect(DATABASE_URL, {
@@ -29,7 +37,13 @@ mongoose.connect(DATABASE_URL, {
 });
 
 const corsOptions = {
-  origin: 'http://localhost:8080',
+  origin: (origin, callback) => {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
 };
 app.use(cookieParser());
