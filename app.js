@@ -26,16 +26,6 @@ const whitelist = [
   'https://www.news-search.tk',
   'http://www.news-search.tk'];
 
-
-const app = express();
-app.use(cookieParser());
-mongoose.connect(DATABASE_URL, {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useFindAndModify: false,
-  useUnifiedTopology: true,
-});
-
 const corsOptions = {
   origin: (origin, callback) => {
     if (whitelist.indexOf(origin) !== -1) {
@@ -45,13 +35,25 @@ const corsOptions = {
     }
   },
   credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization'],
 };
+
+const app = express();
+app.use(cookieParser());
+app.use(cors(corsOptions));
+mongoose.connect(DATABASE_URL, {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useFindAndModify: false,
+  useUnifiedTopology: true,
+});
+
+
 app.use(cookieParser());
 app.use(limiter);
 app.use(bodyParser.json());
 app.use(helmet());
 
-app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(requestLogger);
 app.post('/signup', validationCreateUser, createUser);
