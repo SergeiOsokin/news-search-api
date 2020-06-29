@@ -23,8 +23,11 @@ const whitelist = [
   'http://localhost:8080',
   'http://127.0.0.1:5500',
   'https://sergeiosokin.github.io',
+  'https://www.sergeiosokin.github.io',
   'https://www.news-search.tk',
-  'http://www.news-search.tk'];
+  'https://news-search.tk',
+  'http://www.news-search.tk/',
+  'http://news-search.tk/'];
 
 const corsOptions = {
   origin: (origin, callback) => {
