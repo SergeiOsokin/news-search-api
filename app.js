@@ -26,7 +26,7 @@ const whitelist = [
   'https://www.sergeiosokin.github.io',
   'https://www.news-search.tk',
   'https://news-search.tk',
-  'http://www.news-search.tk/',
+  'http://www.news-search.tk',
   'http://news-search.tk'];
 
 const corsOptions = {
